@@ -1,0 +1,12 @@
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\Layer.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\Layer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\Layer.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\Layer.AssemblyInfo.cs
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\Layer.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\bin\Debug\net5.0\Layer.deps.json
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\bin\Debug\net5.0\Layer.dll
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\bin\Debug\net5.0\Layer.pdb
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\Layer.dll
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\refint\Layer.dll
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\Layer.pdb
+C:\Users\user\source\repos\HotelListing_webAPI\Layer\obj\Debug\net5.0\ref\Layer.dll
