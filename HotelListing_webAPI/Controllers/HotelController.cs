@@ -33,13 +33,13 @@ namespace HotelListing_webAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     
 
-        public async Task<object> GetHotels()
+        public async Task<IActionResult> GetHotels()
         {
             try
             {
                 var hotels = await _unitOfWork.Hotels.GetAll();
                 var results = _mapper.Map<IList<HotelDTO>>(hotels);
-                return Ok(results);
+                return Ok(hotels);
             }
             catch(Exception ex)
             {
