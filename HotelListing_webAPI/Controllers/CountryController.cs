@@ -41,7 +41,7 @@ namespace HotelListing_webAPI.Controllers
             }
         }
 
-        [HttpGet("{id: int}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCountry(int id)
         {
             try

@@ -28,8 +28,9 @@ namespace HotelListing_webAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListing", Version = "v1" }));
-            services.AddControllersWithViews();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("sqlConnection")));    
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -39,7 +40,6 @@ namespace HotelListing_webAPI
             services.AddAutoMapper(typeof(MapperInitillizer));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,9 +66,8 @@ namespace HotelListing_webAPI
             app.UseEndpoints(endpoints =>
             {
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllers();
+                  
             });
 
             app.UseSpa(spa =>

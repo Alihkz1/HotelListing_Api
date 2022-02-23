@@ -48,7 +48,7 @@ namespace HotelListing_webAPI.Controllers
             }
         }
 
-        [HttpGet("{id: int}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
