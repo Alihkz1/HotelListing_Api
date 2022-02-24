@@ -35,9 +35,9 @@ namespace HotelListing_webAPI.Controllers
         public async Task<IActionResult> GetHotels()
         {
             try
-            {
+                {
                 var hotels = await _unitOfWork.Hotels.GetAll();
-                var results = _mapper.Map<IList<HotelDTO>>(hotels);
+              //  var results = _mapper.Map<IList<HotelDTO>>(hotels);
                 return Ok(hotels);
             }
             catch(Exception ex)
@@ -55,8 +55,8 @@ namespace HotelListing_webAPI.Controllers
         {
             try
             {
-                var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id, new List<string> { "Hotel" });
-                var result = _mapper.Map<HotelDTO>(hotel);
+                var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id);
+              //  var result = _mapper.Map<HotelDTO>(hotel);
                 return Ok(hotel);
             }
             catch (Exception ex)

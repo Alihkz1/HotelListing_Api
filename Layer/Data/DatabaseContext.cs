@@ -1,5 +1,4 @@
 ﻿ using Microsoft.EntityFrameworkCore;
-
 namespace HotelListing_webAPI.Data
 {
     public class DatabaseContext : DbContext
@@ -13,7 +12,7 @@ namespace HotelListing_webAPI.Data
 
         protected override void OnModelCreating (ModelBuilder builder)
         {
-
+            base.OnModelCreating (builder);
             builder.Entity<Country>().HasData(
                 new Country
                 {
