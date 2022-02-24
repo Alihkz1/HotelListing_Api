@@ -30,5 +30,5 @@ namespace HotelListing_webAPI.Repository
         {
           await _context.SaveChangesAsync();
         }
-    }
+    } 
 }
