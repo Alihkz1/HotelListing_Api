@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using HotelListing_webAPI.Data;
 using HotelListing_webAPI.IRepository;
 using HotelListing_webAPI.Models;
 using Microsoft.AspNetCore.Http;
@@ -20,8 +21,8 @@ namespace HotelListing_webAPI.Controllers
 
         public CountryController(IUnitOfWork unitOfWork, ILogger<CountryController> logger, IMapper mapper)
         {
-            _unitOfWork= unitOfWork;
-            _logger= logger;
+            _unitOfWork = unitOfWork;
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -33,13 +34,13 @@ namespace HotelListing_webAPI.Controllers
         {
             try
             {
-                var countries = await _unitOfWork.Countries.GetAll(includes : new List<string>(){ "Hotels" });
+                var countries = await _unitOfWork.Countries.GetAll(includes: new List<string>() { "Hotels" });
                 var results = _mapper.Map<IList<CountryDTO>>(countries);
                 return Ok(results);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"something went wrong at {nameof(GetCountries)}", ex );
+                _logger.LogError($"something went wrong at {nameof(GetCountries)}", ex);
                 return StatusCode(500, "Internal Server Error ; please try again later");
             }
         }
@@ -52,7 +53,7 @@ namespace HotelListing_webAPI.Controllers
         {
             try
             {
-                var country = await _unitOfWork.Countries.Get(q => q.Id == id , new List <string> {"Hotels"});
+                var country = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Hotels" });
                 var result = _mapper.Map<CountryDTO>(country);
                 return Ok(result);
             }
@@ -62,6 +63,7 @@ namespace HotelListing_webAPI.Controllers
                 return StatusCode(500, "Internal Server Error ; please try again later");
             }
         }
+
 
     }
 }
