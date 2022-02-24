@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelListing_webAPI.Repository
 {
-    public class GenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
 
         private readonly DatabaseContext _context;
