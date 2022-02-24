@@ -43,21 +43,21 @@ namespace HotelListing_webAPI.Controllers
             catch(Exception ex)
             {
                 _logger.LogError($"something went wrong at {nameof(GetHotels)}", ex);
-                return StatusCode(500, "Internal Server Error ! pls try again later");
+                return StatusCode(500, "Internal Server Error ! please try again later");
             }
         }   
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)] 
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotel(int id)
         {
             try
             {
-                var hotel = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Country" });
+                var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id, new List<string> { "Hotel" });
                 var result = _mapper.Map<HotelDTO>(hotel);
-                return Ok(result);
+                return Ok(hotel);
             }
             catch (Exception ex)
             {

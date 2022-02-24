@@ -40,7 +40,7 @@ namespace HotelListing_webAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"something went wrong at {nameof(GetCountries)}", ex );
-                return StatusCode(500, "Internal Server Error ; pls try again later");
+                return StatusCode(500, "Internal Server Error ; please try again later");
             }
         }
 
@@ -59,7 +59,7 @@ namespace HotelListing_webAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"something went wrong at {nameof(GetCountry)}", ex);
-                return StatusCode(500, "Internal Server Error ; pls try again later");
+                return StatusCode(500, "Internal Server Error ; please try again later");
             }
         }
 
