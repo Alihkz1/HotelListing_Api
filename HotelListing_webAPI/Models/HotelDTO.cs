@@ -15,15 +15,16 @@ namespace HotelListing_webAPI.Models
         [Required]
         [Range(1, 5)]
         public double Rating { get; set; }
+
         [Required]
-        [ForeignKey(nameof(Country))]
         public int CountryId { get; set; }
-        public Country Country { get; set; }
+        
 
     }
     public class HotelDTO : CreateHotelDTO
     {
         public int Id { get; set; }
+        public Country Country { get; set; }
 
     }
 }

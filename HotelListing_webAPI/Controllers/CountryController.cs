@@ -26,13 +26,16 @@ namespace HotelListing_webAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCountries()
         {
             try
             {
-                var countries = await _unitOfWork.Countries.GetAll();
+                var countries = await _unitOfWork.Countries.GetAll(includes : new List<string>(){ "Hotels" });
                 var results = _mapper.Map<IList<CountryDTO>>(countries);
-                return Ok(countries);
+                return Ok(results);
             }
             catch (Exception ex)
             {
@@ -41,14 +44,17 @@ namespace HotelListing_webAPI.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCountry(int id)
         {
             try
             {
-                var country = await _unitOfWork.Countries.Get(q => q.Id == id , new List <string> {"Hotels "});
+                var country = await _unitOfWork.Countries.Get(q => q.Id == id , new List <string> {"Hotels"});
                 var result = _mapper.Map<CountryDTO>(country);
-                return Ok(country);
+                return Ok(result);
             }
             catch (Exception ex)
             {

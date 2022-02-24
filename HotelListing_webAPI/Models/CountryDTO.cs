@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using HotelListing_webAPI.Data;
 
 namespace HotelListing_webAPI.Models
 {
@@ -15,5 +18,7 @@ namespace HotelListing_webAPI.Models
     public class CountryDTO : CreateCountryDTO
     {
         public int Id { get; set; }
+        public IList<Hotel> Hotels { get; set; }
     }
 }
+ 

@@ -29,7 +29,12 @@ namespace HotelListing_webAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
+            services.AddCors(o =>{ o.AddPolicy("AllowAll", builder =>
+            builder.AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader()
+            );
+            });
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListing", Version = "v1" }));
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("sqlConnection")));    
             // In production, the React files will be served from this directory
@@ -56,6 +61,7 @@ namespace HotelListing_webAPI
                 app.UseHsts();
             }
 
+            app.UseCors("AllowAll");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -66,6 +72,7 @@ namespace HotelListing_webAPI
             app.UseEndpoints(endpoints =>
             {
 
+              
                 endpoints.MapControllers();
                   
             });
