@@ -14,7 +14,7 @@ namespace HotelListing_webAPI.Data
 
         [ForeignKey(nameof(Country))]
         public int CountryId { get; set; } 
-        public Country Country { get; set; } //Country is a object
+
 
     }
 

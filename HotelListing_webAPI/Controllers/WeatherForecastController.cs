@@ -35,7 +35,7 @@ namespace HotelListing_webAPI.Controllers
             })
             .ToArray();
         }
-        [HttpPost] //atribiute
+        [HttpPost] //attribiute
         public IEnumerable<WeatherForecast> Post()
         {
             var rng = new Random();
