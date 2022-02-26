@@ -1,7 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using HotelListing_webAPI.Data;
-
 namespace HotelListing_webAPI.Models
 {
     public class CreateHotelDTO
@@ -18,7 +15,6 @@ namespace HotelListing_webAPI.Models
         [Range(1, 5)]
         public double Rating { get; set; }
 
-        //////[Required]
         public int CountryId { get; set; }
     }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using HotelListing_webAPI.Data;
@@ -85,9 +84,10 @@ namespace HotelListing_webAPI.Controllers
                 await _unitOfWork.save();
                 return CreatedAtRoute("GetHotel", new { id = hotel.Id }, hotel);
             }
+
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Invalid Post attempt in {nameof(CreateHotel)}");
+                _logger.LogError(ex, $"something went wrong at {nameof(CreateHotel)}");
                 return StatusCode(500, "Internal Server Error ! please try again later");
 
             }
