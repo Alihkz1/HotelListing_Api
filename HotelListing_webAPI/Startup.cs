@@ -58,7 +58,6 @@ namespace HotelListing_webAPI
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -67,15 +66,16 @@ namespace HotelListing_webAPI
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HotelListing v1"));
+            app.UseSwaggerUI(c =>
+            {
+                string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+                c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "Hotel Listing API");
+            });
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-
-              
                 endpoints.MapControllers();
-                  
             });
 
             app.UseSpa(spa =>
