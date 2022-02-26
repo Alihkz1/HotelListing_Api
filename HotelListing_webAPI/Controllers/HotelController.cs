@@ -39,6 +39,7 @@ namespace HotelListing_webAPI.Controllers
                 //  var results = _mapper.Map<IList<HotelDTO>>(hotels);
                 return Ok(hotels);
             }
+
             catch (Exception ex)
             {
                 _logger.LogError($"something went wrong at {nameof(GetHotels)}", ex);
@@ -58,6 +59,7 @@ namespace HotelListing_webAPI.Controllers
                 var result = _mapper.Map<HotelDTO>(hotel);
                 return Ok(hotel);
             }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"something went wrong at {nameof(GetHotel)}");
@@ -119,6 +121,7 @@ namespace HotelListing_webAPI.Controllers
                 await _unitOfWork.save();
                 return NoContent();
             }
+
             catch(Exception ex)
             {
                 _logger.LogError(ex, $"something went wrong at {nameof(UpdateHotel)}");

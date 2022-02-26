@@ -38,6 +38,7 @@ namespace HotelListing_webAPI.Controllers
                 var results = _mapper.Map<IList<CountryDTO>>(countries);
                 return Ok(results);
             }
+
             catch (Exception ex)
             {
                 _logger.LogError($"something went wrong at {nameof(GetCountries)}", ex);
@@ -57,6 +58,7 @@ namespace HotelListing_webAPI.Controllers
                 var result = _mapper.Map<CountryDTO>(country);
                 return Ok(result);
             }
+
             catch (Exception ex)
             {
                 _logger.LogError($"something went wrong at {nameof(GetCountry)}", ex);
@@ -89,6 +91,7 @@ namespace HotelListing_webAPI.Controllers
                 await _unitOfWork.save();
                 return NoContent();
             }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"something went wrong at {nameof(UpdateCountry)}");
