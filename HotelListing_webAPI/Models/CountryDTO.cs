@@ -15,10 +15,16 @@ namespace HotelListing_webAPI.Models
         [StringLength (2  , ErrorMessage ="short countryName must be 2 characters")]
         public string ShortName { get; set; }
     }
+
+    public class UpdateCountryDTO : CreateHotelDTO
+    {
+        public IList<CreateHotelDTO> Hotels { get; set; }
+    }
+
     public class CountryDTO : CreateCountryDTO
     {
         public int Id { get; set; }
-        public IList<Hotel> Hotels { get; set; }
+        public IList<Hotel> Hotels { get; set; }    
     }
 }
  

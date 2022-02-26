@@ -64,6 +64,37 @@ namespace HotelListing_webAPI.Controllers
             }
         }
 
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateCountry(int id, [FromBody] UpdateCountryDTO countryDTO)
+        {
+            if (!ModelState.IsValid || id < 1)
+            {
+                _logger.LogError($"Invalid Update attempt in {nameof(UpdateCountry)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var country = await _unitOfWork.Countries.Get(q => q.Id == id);
+                if (country == null)
+                {
+                    _logger.LogError($"Invalid Update attempt in {nameof(UpdateCountry)}");
+                    return BadRequest("Submitted Data Is Invalid ! ");
+                }
+                _mapper.Map(countryDTO, country);
+                _unitOfWork.Countries.Update(country);
+                await _unitOfWork.save();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"something went wrong at {nameof(UpdateCountry)}");
+                return StatusCode(500, "Internal Server Error ! please try again later");
+            }
+        }
 
     }
 }
