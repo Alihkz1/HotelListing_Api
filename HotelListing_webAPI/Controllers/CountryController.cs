@@ -99,5 +99,39 @@ namespace HotelListing_webAPI.Controllers
             }
         }
 
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteCountry(int id, [FromBody] UpdateCountryDTO CountryDTO)
+        {
+            if (id < 1)
+            {
+                _logger.LogError($"Invalid Update attempt in {nameof(DeleteCountry)}");
+                return BadRequest(ModelState);
+            } 
+
+            try
+            {
+                var country = await _unitOfWork.Hotels.Get(q => q.Id == id);
+                if (country == null)
+                {
+                    _logger.LogError($"Invalid Update attempt in {nameof(DeleteCountry)}");
+                    return BadRequest("Submitted Data Is Invalid ! ");
+                }
+                await _unitOfWork.Countries.Delete(id);
+                await _unitOfWork.save();
+                return NoContent();
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"something went wrong at {nameof(DeleteCountry)}");
+                return StatusCode(500, "Internal Server Error ! please try again later");
+            }
+        }
+
+
+
     }
 }
