@@ -47,7 +47,7 @@ namespace HotelListing_webAPI.Controllers
             }
         }
 
-        [HttpGet("{id:int}", Name = "GetHotel")]
+        [HttpGet("{id:int}", Name = "GetHotel")] // Name : is like an internal nickname !!
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -67,10 +67,10 @@ namespace HotelListing_webAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateHotel(CreateHotelDTO hotelDTO)
+        public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDTO hotelDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace HotelListing_webAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Invalid Post attempt in {nameof(CreateHotel)}");
+                _logger.LogError(ex, $"Invalid Post attempt in {nameof(CreateHotel)}");
                 return StatusCode(500, "Internal Server Error ! please try again later");
 
             }
