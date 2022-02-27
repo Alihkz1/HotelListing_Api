@@ -34,14 +34,14 @@ namespace HotelListing_webAPI.Controllers
 
         public async Task<IActionResult> GetHotels()
         {
-
+          
                 var hotels = await _unitOfWork.Hotels.GetAll();
                 var results = _mapper.Map<IList<HotelDTO>>(hotels);
                 return Ok(results);
 
         }
 
-        [HttpGet("{id:int}", Name = "GetHotel")] // Name : is like an internal nickname !!
+        [HttpGet("{id:int}", Name = "GetHotel")]  // Name : is like an internal nickname !!
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

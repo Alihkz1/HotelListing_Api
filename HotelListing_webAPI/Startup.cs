@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +46,13 @@ namespace HotelListing_webAPI
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
+            });
+            services.AddApiVersioning(opt =>
+            {
+                opt.ReportApiVersions = true;
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVerion(1, 0); // this is default api-version
+                opt.ApiVersionReader = new HeaderApiVersionReader("api-version"); // this enables client to add a header in this way : api-version 2.0
             });
              services.AddAutoMapper(typeof(MapperInitillizer));
              services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -108,6 +117,14 @@ namespace HotelListing_webAPI
                     }
                 });
             });
+            
+        }
+    }
+
+    internal class ApiVerion : ApiVersion
+    {
+        public ApiVerion(int majorVersion, int minorVersion) : base(majorVersion, minorVersion)
+        {
         }
     }
 }
