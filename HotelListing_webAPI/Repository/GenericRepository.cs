@@ -79,10 +79,9 @@ namespace HotelListing_webAPI.Repository
             return await query.AsNoTracking().ToListAsync(); 
         }
 
-        public async Task<X.PagedList.IPagedList<T>> GetPagedList( RequestParams requestParams , List<string> includes = null)
+        public async Task<IPagedList<T>> GetPagedList( RequestParams requestParams , List<string> includes = null)
         {
             IQueryable<T> query = _db;
-
 
             if (includes != null)
             {

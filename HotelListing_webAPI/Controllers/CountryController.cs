@@ -34,7 +34,7 @@ namespace HotelListing_webAPI.Controllers
         {
             try
             {
-                var countries = await _unitOfWork.Countries.GetAll(includes: new List<string>() { "Hotels" });
+                var countries = await _unitOfWork.Countries.GetPagedList(requestParams);
                 var results = _mapper.Map<IList<CountryDTO>>(countries);
                 return Ok(results);
             }
