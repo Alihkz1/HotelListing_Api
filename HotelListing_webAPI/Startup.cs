@@ -2,15 +2,19 @@ using AutoMapper;
 using HotelListing_webAPI.Configrations;
 using HotelListing_webAPI.Data;
 using HotelListing_webAPI.IRepository;
+using HotelListing_webAPI.Models;
 using HotelListing_webAPI.Repository;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace HotelListing_webAPI
 {
@@ -84,6 +88,25 @@ namespace HotelListing_webAPI
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
+            });
+
+            app.UseExceptionHandler(error =>
+            {
+                error.Run(async context => {
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    context.Response.ContentType = "application/json";
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if (contextFeature != null)
+                    {
+                        Log.Error($"something went wrong at {contextFeature.Error}");
+                        await context.Response.WriteAsync(
+                            new Errors
+                            {
+                                StatusCode = context.Response.StatusCode,
+                                ErrorMessage = "Internal Server Error ; please try again later"
+                            }.ToString());
+                    }
+                });
             });
         }
     }

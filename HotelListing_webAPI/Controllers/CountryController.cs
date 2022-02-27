@@ -32,18 +32,11 @@ namespace HotelListing_webAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCountries([FromQuery] RequestParams requestParams)
         {
-            try
-            {
+           
                 var countries = await _unitOfWork.Countries.GetPagedList(requestParams);
                 var results = _mapper.Map<IList<CountryDTO>>(countries);
                 return Ok(results);
-            }
-
-            catch (Exception ex)
-            {
-                _logger.LogError($"something went wrong at {nameof(GetCountries)}", ex);
-                return StatusCode(500, "Internal Server Error ; please try again later");
-            }
+        
         }
 
         [HttpGet("{id:int}")]
@@ -52,18 +45,11 @@ namespace HotelListing_webAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCountry(int id)
         {
-            try
-            {
+           
                 var country = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Hotels" });
                 var result = _mapper.Map<CountryDTO>(country);
                 return Ok(result);
-            }
 
-            catch (Exception ex)
-            {
-                _logger.LogError($"something went wrong at {nameof(GetCountry)}", ex);
-                return StatusCode(500, "Internal Server Error ; please try again later");
-            }
         }
 
         [HttpPut("{id:int}")]
@@ -78,8 +64,6 @@ namespace HotelListing_webAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
                 var country = await _unitOfWork.Countries.Get(q => q.Id == id);
                 if (country == null)
                 {
@@ -90,13 +74,7 @@ namespace HotelListing_webAPI.Controllers
                 _unitOfWork.Countries.Update(country);
                 await _unitOfWork.save();
                 return NoContent();
-            }
 
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"something went wrong at {nameof(UpdateCountry)}");
-                return StatusCode(500, "Internal Server Error ! please try again later");
-            }
         }
 
         [HttpDelete]
@@ -111,8 +89,6 @@ namespace HotelListing_webAPI.Controllers
                 return BadRequest(ModelState);
             } 
 
-            try
-            {
                 var country = await _unitOfWork.Hotels.Get(q => q.Id == id);
                 if (country == null)
                 {
@@ -122,16 +98,8 @@ namespace HotelListing_webAPI.Controllers
                 await _unitOfWork.Countries.Delete(id);
                 await _unitOfWork.save();
                 return NoContent();
-            }
 
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"something went wrong at {nameof(DeleteCountry)}");
-                return StatusCode(500, "Internal Server Error ! please try again later");
-            }
         }
-
-
 
     }
 }

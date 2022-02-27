@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using HotelListing_webAPI.Data;
@@ -33,18 +34,11 @@ namespace HotelListing_webAPI.Controllers
 
         public async Task<IActionResult> GetHotels()
         {
-            try
-            {
-                var hotels = await _unitOfWork.Hotels.GetAll();
-                //  var results = _mapper.Map<IList<HotelDTO>>(hotels);
-                return Ok(hotels);
-            }
 
-            catch (Exception ex)
-            {
-                _logger.LogError($"something went wrong at {nameof(GetHotels)}", ex);
-                return StatusCode(500, "Internal Server Error ! please try again later");
-            }
+                var hotels = await _unitOfWork.Hotels.GetAll();
+                var results = _mapper.Map<IList<HotelDTO>>(hotels);
+                return Ok(results);
+
         }
 
         [HttpGet("{id:int}", Name = "GetHotel")] // Name : is like an internal nickname !!
@@ -53,18 +47,11 @@ namespace HotelListing_webAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotel(int id)
         {
-            try
-            {
+
                 var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id);
                 var result = _mapper.Map<HotelDTO>(hotel);
                 return Ok(hotel);
-            }
 
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"something went wrong at {nameof(GetHotel)}");
-                return StatusCode(500, "Internal Server Error ; please try again later");
-            }
         }
 
         [HttpPost]
@@ -79,20 +66,10 @@ namespace HotelListing_webAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
                 var hotel = _mapper.Map<Hotel>(hotelDTO);
                 await _unitOfWork.Hotels.Insert(hotel);
                 await _unitOfWork.save();
                 return CreatedAtRoute("GetHotel", new { id = hotel.Id }, hotel);
-            }
-                
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"something went wrong at {nameof(CreateHotel)}");
-                return StatusCode(500, "Internal Server Error ! please try again later");
-
-            }
 
         }
 
@@ -108,25 +85,18 @@ namespace HotelListing_webAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
                 var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id);
                 if(hotel == null)
                 {
                     _logger.LogError($"Invalid Update attempt in {nameof(UpdateHotel)}");
                     return BadRequest("Submitted Data Is Invalid ! ");
                 }
+
                 _mapper.Map(hotelDTO, hotel);
                 _unitOfWork.Hotels.Update(hotel);
                 await _unitOfWork.save();
                 return NoContent();
-            }
 
-            catch(Exception ex)
-            {
-                _logger.LogError(ex, $"something went wrong at {nameof(UpdateHotel)}");
-                return StatusCode(500, "Internal Server Error ! please try again later");
-            }
         }
 
         [HttpDelete]
@@ -141,8 +111,7 @@ namespace HotelListing_webAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
+
                 var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id);
                 if (hotel == null)
                 {
@@ -152,13 +121,7 @@ namespace HotelListing_webAPI.Controllers
                 await _unitOfWork.Hotels.Delete(id);
                 await _unitOfWork.save();
                 return NoContent();
-            }
 
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"something went wrong at {nameof(DeleteHotel)}");
-                return StatusCode(500, "Internal Server Error ! please try again later");
-            }
         }
 
     }
