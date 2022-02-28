@@ -99,28 +99,29 @@ namespace HotelListing_webAPI.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteHotel(int id, [FromBody] UpdateHotelDTO hotelDTO)
+        public async Task<IActionResult> DeleteHotel(int id)
         {
-            if ( id < 1)
+            if (id < 1)
             {
-                _logger.LogError($"Invalid Update attempt in {nameof(DeleteHotel)}");
-                return BadRequest(ModelState);
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteHotel)}");
+                return BadRequest();
             }
 
+            var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id);
+            if (hotel == null)
+            {
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteHotel)}");
+                return BadRequest("Submitted data is invalid");
+            }
 
-                var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id);
-                if (hotel == null)
-                {
-                    _logger.LogError($"Invalid Update attempt in {nameof(DeleteHotel)}");
-                    return BadRequest("Submitted Data Is Invalid ! ");
-                }
-                await _unitOfWork.Hotels.Delete(id);
-                await _unitOfWork.save();
-                return NoContent();
+            await _unitOfWork.Hotels.Delete(id);
+            await _unitOfWork.save();
+
+            return NoContent();
 
         }
 

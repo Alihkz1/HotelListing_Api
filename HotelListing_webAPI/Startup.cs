@@ -1,4 +1,5 @@
 using AutoMapper;
+using HotelListing.Core;
 using HotelListing_webAPI.Configrations;
 using HotelListing_webAPI.Data;
 using HotelListing_webAPI.IRepository;
@@ -33,7 +34,10 @@ namespace HotelListing_webAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("sqlConnection")));
-            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers(config =>
+            {
+                config.CacheProfiles.Add("120SecondsDuration", new CacheProfile { Duration = 120 });
+            }).AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddCors(o =>{ o.AddPolicy("AllowAll", builder =>
             builder.AllowAnyOrigin()
              .AllowAnyMethod()
@@ -56,7 +60,12 @@ namespace HotelListing_webAPI
             });
              services.AddAutoMapper(typeof(MapperInitillizer));
              services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+             services.AddResponseCaching();
+             services.AddHttpCacheHeaders();
+             services.AddMemoryCache();
+             services.ConfigureRateLimiting();
+             services.AddHttpContextAccessor();
+            services.ConfigureHttpCacheHeaders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,9 +92,9 @@ namespace HotelListing_webAPI
                 c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "Hotel Listing API");
             });
             app.UseRouting();
-
+            app.UseResponseCaching();
             app.UseEndpoints(endpoints =>
-            {
+            {   
                 endpoints.MapControllers();
             });
 

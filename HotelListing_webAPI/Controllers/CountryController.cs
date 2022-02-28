@@ -27,6 +27,7 @@ namespace HotelListing_webAPI.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(CacheProfileName = "120SecondsDuration")] // catching : application takes a quick copy of data layer and it returns that data as long as we tell him . in this case 120s
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -40,6 +41,7 @@ namespace HotelListing_webAPI.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [ResponseCache(CacheProfileName = "120SecondsDuration")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -77,27 +79,29 @@ namespace HotelListing_webAPI.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteCountry(int id, [FromBody] UpdateCountryDTO CountryDTO)
+        public async Task<IActionResult> DeleteCountry(int id)
         {
             if (id < 1)
             {
-                _logger.LogError($"Invalid Update attempt in {nameof(DeleteCountry)}");
-                return BadRequest(ModelState);
-            } 
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteCountry)}");
+                return BadRequest();
+            }
 
-                var country = await _unitOfWork.Hotels.Get(q => q.Id == id);
-                if (country == null)
-                {
-                    _logger.LogError($"Invalid Update attempt in {nameof(DeleteCountry)}");
-                    return BadRequest("Submitted Data Is Invalid ! ");
-                }
-                await _unitOfWork.Countries.Delete(id);
-                await _unitOfWork.save();
-                return NoContent();
+            var country = await _unitOfWork.Countries.Get(q => q.Id == id);
+            if (country == null)
+            {
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteCountry)}");
+                return BadRequest("Submitted data is invalid");
+            }
+
+            await _unitOfWork.Countries.Delete(id);
+            await _unitOfWork.save();
+
+            return NoContent();
 
         }
 
